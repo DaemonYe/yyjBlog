@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- 1.引入定义JDBC连接的属性文件 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+	
+	<!-- 扫描cn.yeyangjie.dao包下所有标注@Repository的DAO组件 -->
+    <context:component-scan base-package="cn.yeyangjie.dao"/>
+
+	<!-- 2.定义一个数据源 -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close"
+	    p:driverClassName="${jdbc.driverClassName}"
+	    p:url="${jdbc.url}"
+	    p:username="${jdbc.username}"
+	    p:password="${jdbc.password}" />
+	
+	<!-- 3.定义Hibernate的Session工厂,通过AnnotationSessionFactoryBean定义SessionFactory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<!-- 3_1.指定数据源 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- 3_2.扫描基于JPA注解PO类目录 -->
+	    <property name="packagesToScan">
+            <list>
+                <value>cn.yeyangjie.domain</value>
+            </list>
+        </property>
+        <!-- 3_3.指定Hibernate的属性信息 -->
+		<property name="hibernateProperties">
+			<props>
+				<!-- 3_3_1.指定数据库的类型为MySQL -->
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+				<!-- 3_3_2.在提供数据库操作里显示SQL,方便开发期的调试，在部署时应该将其设计为false -->
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 4.定义Hibernate Template -->
+	<bean id="hibernateTemplate"
+		class="org.springframework.orm.hibernate3.HibernateTemplate"
+		 p:sessionFactory-ref="sessionFactory" />
+</beans>

@@ -1,0 +1,54 @@
+.growth{
+	padding: 20px 20px 20px 20px;
+  	position: relative;
+  	background: #FFFFFF;
+  	margin-left: 135px;
+  	margin-bottom: 20px;
+  	margin-top: 10px;
+  	margin-right: 20px;
+}
+.growth{
+	box-shadow: -2px -1px 5px #666;
+}
+.growth::before {
+	content: "";
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	position: absolute;
+	background: #cac1c1;
+	border: 2px solid #fff;
+	left: -5px;
+	-webkit-transition: all 1s;
+	-moz-transition: all 1s;
+	-o-transition: all 1s;
+	transition: all 1s;
+}
+.growth:hover::before {
+	background: #474645
+}
+.dateview {
+	position: absolute;
+	left: -103px;
+	top: 12px;
+	z-index: 1;
+	color: #f0f0ed;
+}
+.growth::after {
+	content: "";
+	width: 121px;
+	height: 29px;
+	position: absolute;
+	left: -126px;
+	top: 9px;
+	z-index: 0;
+	background: #474645 url(/yyjBlog/img/ti.png) no-repeat;
+	opacity: 0;
+	-webkit-transition: all 1s;
+	-moz-transition: all 1s;
+	-o-transition: all 1s;
+	transition: all 1s;
+}
+.growth:hover::after {
+	opacity: 1
+}
